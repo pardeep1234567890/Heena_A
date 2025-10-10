@@ -46,7 +46,7 @@ const Generator = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
           placeholder="Enter your design description..."
-          className="w-full max-w-lg border border-gray-300 rounded-lg py-2 px-4 mb-4"
+          className="w-full sm:max-w-lg border border-gray-300 rounded-lg py-2 px-4 mb-4"
           required
         />
         <button

@@ -75,9 +75,9 @@ const Booking = () => {
 
           <div>
             <label className="block text-gray-700 mb-2">Service Location</label>
-            <div className="flex items-center space-x-4">
-              <label><input type="radio" name="location" value="At Venue/Home" checked={formData.location === 'At Venue/Home'} onChange={handleChange} className="mr-2" />At Venue/Home</label>
-              <label><input type="radio" name="location" value="Artist's Location" checked={formData.location === "Artist's Location"} onChange={handleChange} className="mr-2" />Artist's Location</label>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+              <label className="flex items-center"><input type="radio" name="location" value="At Venue/Home" checked={formData.location === 'At Venue/Home'} onChange={handleChange} className="mr-2" />At Venue/Home</label>
+              <label className="flex items-center"><input type="radio" name="location" value="Artist's Location" checked={formData.location === "Artist's Location"} onChange={handleChange} className="mr-2" />Artist's Location</label>
             </div>
           </div>
 

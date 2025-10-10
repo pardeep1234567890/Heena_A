@@ -6,7 +6,7 @@ const About = () => {
       <div className="max-w-4xl mx-auto flex flex-col md:flex-row items-center">
         <div className="md:w-1/3 mb-6 md:mb-0">
           {/* Placeholder for an image of the artist */}
-          <div className="w-48 h-48 bg-gray-300 rounded-full mx-auto"></div>
+          <div className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 bg-gray-300 rounded-full mx-auto"></div>
         </div>
         <div className="md:w-2/3 md:pl-8 text-center md:text-left">
           <h2 className="text-4xl font-bold text-gray-800 mb-4 font-dancing">About Heena by Anshu</h2>
