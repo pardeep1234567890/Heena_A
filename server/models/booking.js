@@ -27,6 +27,10 @@ const BookingSchema = new mongoose.Schema({
   },
   referenceImage: {
     type: String
+  },
+  status: {
+    type: String,
+    default: 'pending'
   }
 });
 

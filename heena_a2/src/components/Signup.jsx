@@ -1,57 +1,38 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
 
 const Signup = () => {
+  const navigate = useNavigate();
+  const { backend_url } = useContext(AppContext)
   const [formData, setFormData] = useState({ name: '', email: '', password: '' });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
+    setFormData({ ...formData, [e.target.name]: e.target.value })      // ...formdata : it keeps all previous values and only updates the changed one.
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log('Sending signup request:', formData);
-      const res = await fetch('/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-      
-      console.log('Response status:', res.status);
-      
-      // Check if response is ok
-      if (!res.ok) {
-        const text = await res.text();
-        console.error('Error response:', text);
-        let errorMsg = 'Signup failed';
-        try {
-          const errorData = JSON.parse(text);
-          errorMsg = errorData.msg || errorData.message || errorMsg;
-        } catch {
-          errorMsg = text || `HTTP error! status: ${res.status}`;
-        }
-        throw new Error(errorMsg);
-      }
-      
-      // Check if response has content before parsing JSON
-      const text = await res.text();
-      const data = text ? JSON.parse(text) : {};
-      
-      console.log('Success response:', data);
-      
+      const {data} = await axios.post(backend_url+"/api/auth/signup", formData);
+      console.log(data)
       if (data.token) {
-        localStorage.setItem('token', data.token);
-        alert('Signup successful!');
+        toast.success("Registration successful!");
+        localStorage.setItem("token", data.token);
+        navigate('/login');
       } else {
-        alert('Signup failed. Please try again.');
+        toast.error(data.msg || "Registration failed!");
       }
-    } catch (error) {
-      console.error('Signup error:', error);
-      alert(`Signup failed: ${error.message}`);
+    } catch (err) {
+      toast.error(err.response?.data?.msg || "Registration failed. Please try again.");
+      console.error(err);
     }
+  }
+
+  const handleGoogleLogin = () => {
+    window.location.href = `${backend_url}/api/auth/google`;
   };
 
   return (
@@ -65,6 +46,10 @@ const Signup = () => {
           <button type="submit" className="w-full bg-brand text-white font-bold py-3 rounded-md hover:bg-orange-700 transition duration-300">
             Sign Up
           </button>
+          <button type="button" onClick={handleGoogleLogin} className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-bold py-3 rounded-md hover:bg-gray-50 transition duration-300 mt-4">
+            <img src="https://static.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google logo" className="w-5 h-5 mr-2" />
+            Continue with Google
+          </button>
           <p className="text-center text-gray-600">
             Already have an account? <Link to="/login" className="text-orange-700 hover:underline">Login</Link>
           </p>
@@ -72,6 +57,6 @@ const Signup = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Signup;

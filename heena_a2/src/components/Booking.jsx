@@ -1,3 +1,5 @@
+
+
 import React, { useState } from 'react';
 
 const Booking = () => {
@@ -23,18 +25,17 @@ const Booking = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // const formDataWithImage = new FormData();
-      // for (const key in formData) {
-      //   formDataWithImage.append(key, formData[key]);
-      // }
+      const formDataWithImage = new FormData();
+      for (const key in formData) {
+        formDataWithImage.append(key, formData[key]);
+      }
 
       const res = await fetch('/api/bookings', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          // 'Content-Type': 'multipart/form-data' // Let browser set this for FormData
         },
-        body: JSON.stringify(formData)
-        // body: formDataWithImage // Use this when handling file uploads
+        body: formDataWithImage
       });
 
       if (res.ok) {
