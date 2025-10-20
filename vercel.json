@@ -2,23 +2,29 @@
   "version": 2,
   "builds": [
     {
-      "src": "server/server.js",
-      "use": "@vercel/node"
-    },
-    {
       "src": "heena_a2/package.json",
       "use": "@vercel/static-build",
-      "config": { "distDir": "dist" }
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "/server/server.js"
+      "config": {
+        "distDir": "dist"
+      }
     },
     {
-      "source": "/(.*)",
-      "destination": "/heena_a2/dist/index.html"
+      "src": "server/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "server/server.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|json|woff|woff2|ttf|eot))",
+      "dest": "heena_a2/dist/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "heena_a2/dist/index.html"
     }
   ]
 }
