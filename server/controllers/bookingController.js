@@ -1,10 +1,27 @@
 
 import Booking from '../models/Booking.js';
+import cloudinary from 'cloudinary';
 
 export const createBooking = async (req, res) => {
-  const { name, phone, eventType, eventDate, location, preferences, referenceImage } = req.body;
+  const { name, phone, eventType, eventDate, location, preferences } = req.body;
+  const file = req.file;
+  let referenceImageUrl = null;
 
   try {
+    if (file) {
+      const result = await new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.v2.uploader.upload_stream(
+          { resource_type: 'auto' },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result);
+          }
+        );
+        uploadStream.end(file.buffer);
+      });
+      referenceImageUrl = result.secure_url;
+    }
+
     const newBooking = new Booking({
       name,
       phone,
@@ -12,7 +29,7 @@ export const createBooking = async (req, res) => {
       eventDate,
       location,
       preferences,
-      referenceImage
+      referenceImage: referenceImageUrl
     });
 
     const booking = await newBooking.save();
