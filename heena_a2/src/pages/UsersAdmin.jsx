@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { AppContext } from '../context/AppContext';
 
 const UsersAdmin = () => {
   const [users, setUsers] = useState([]);
+  const { backend_url } = useContext(AppContext);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data } = await axios.get('/api/users');
-        setUsers(data);
+        if (backend_url) {
+          const { data } = await axios.get(`${backend_url}/api/users`);
+          setUsers(data);
+        }
       } catch (error) {
         toast.error('Failed to fetch users');
         console.error(error);

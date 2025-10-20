@@ -1,15 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { AppContext } from '../context/AppContext';
 
 const Admin = () => {
   const [bookings, setBookings] = useState([]);
+  const { backend_url } = useContext(AppContext);
 
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const { data } = await axios.get('/api/bookings');
-        setBookings(data);
+        if (backend_url) {
+          const { data } = await axios.get(`${backend_url}/api/bookings`);
+          setBookings(data);
+        }
       } catch (error) {
         toast.error('Failed to fetch bookings');
         console.error(error);
@@ -21,7 +25,7 @@ const Admin = () => {
 
   const handleStatusUpdate = async (id, status) => {
     try {
-      const { data } = await axios.put(`/api/bookings/${id}`, { status });
+      const { data } = await axios.put(`${backend_url}/api/bookings/${id}`, { status });
       setBookings(bookings.map(booking => (booking._id === id ? data : booking)));
       toast.success(`Booking ${status}`);
     } catch (error) {
