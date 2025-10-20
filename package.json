@@ -1,8 +1,0 @@
-{
-  "name": "heena-app",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "cd heena_a2 && npm install && npm run build"
-  }
-}
