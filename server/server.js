@@ -29,7 +29,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: false, // Set to true if using HTTPS
+    secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   }
 }));
@@ -48,7 +48,7 @@ mongoose.connect(process.env.MONGO_URI)
   .catch(err => console.log(err));
 
 app.get('/', (req, res) => {
-  res.send('Hello from the backend!');
+  res.send(`Hello from the backend! Mongoose connection state: ${mongoose.connection.readyState}`);
 });
 
 export default app;
