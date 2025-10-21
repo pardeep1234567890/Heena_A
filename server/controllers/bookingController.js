@@ -1,5 +1,5 @@
 
-import Booking from '../models/Booking.js';
+import Booking from '../models/booking.js';
 import cloudinary from 'cloudinary';
 
 export const createBooking = async (req, res) => {
