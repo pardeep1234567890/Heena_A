@@ -147,48 +147,85 @@ const TestimonialsAdmin = () => {
               <p className="text-gray-500 text-sm sm:text-base md:text-lg">No testimonials found</p>
             </div>
           ) : (
-            <div className="overflow-x-auto -mx-4 sm:mx-0">
-              <table className="w-full text-left table-auto min-w-[600px]">
-                <thead>
-                  <tr className="bg-gray-200">
-                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Author</th>
-                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Text</th>
-                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Rating</th>
-                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {testimonials.map(testimonial => (
-                    <tr key={testimonial._id} className="border-b">
-                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{testimonial.author}</td>
-                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm max-w-xs truncate">{testimonial.text}</td>
-                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">
-                        <div className="text-yellow-500">
-                          {'★'.repeat(testimonial.rating)}
-                          {'☆'.repeat(5 - testimonial.rating)}
-                        </div>
-                      </td>
-                      <td className="p-2 sm:p-3 md:p-4">
-                        <div className="flex flex-col sm:flex-row gap-2">
-                          <button 
-                            onClick={() => handleEdit(testimonial)} 
-                            className="text-blue-600 hover:underline text-xs sm:text-sm whitespace-nowrap"
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            onClick={() => handleDelete(testimonial._id)} 
-                            className="text-red-600 hover:underline text-xs sm:text-sm whitespace-nowrap"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </td>
+            <>
+              {/* Mobile Card View */}
+              <div className="block lg:hidden space-y-4">
+                {testimonials.map(testimonial => (
+                  <div key={testimonial._id} className="border rounded-lg p-4 bg-gray-50">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-bold text-base text-gray-800">{testimonial.author}</h3>
+                      <div className="text-yellow-500 text-lg">
+                        {'★'.repeat(testimonial.rating)}
+                        {'☆'.repeat(5 - testimonial.rating)}
+                      </div>
+                    </div>
+                    
+                    <p className="text-sm text-gray-700 italic mb-4">"{testimonial.text}"</p>
+                    
+                    <div className="flex gap-2 pt-3 border-t">
+                      <button 
+                        onClick={() => handleEdit(testimonial)} 
+                        className="flex-1 bg-blue-600 text-white py-2 px-3 rounded hover:bg-blue-700 transition text-sm font-medium"
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => handleDelete(testimonial._id)} 
+                        className="flex-1 bg-red-600 text-white py-2 px-3 rounded hover:bg-red-700 transition text-sm font-medium"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View */}
+              <div className="hidden lg:block overflow-x-auto">
+                <table className="w-full text-left table-auto">
+                  <thead>
+                    <tr className="bg-gray-200">
+                      <th className="p-3 text-sm">Author</th>
+                      <th className="p-3 text-sm">Text</th>
+                      <th className="p-3 text-sm">Rating</th>
+                      <th className="p-3 text-sm">Actions</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {testimonials.map(testimonial => (
+                      <tr key={testimonial._id} className="border-b hover:bg-gray-50">
+                        <td className="p-3 text-sm font-medium">{testimonial.author}</td>
+                        <td className="p-3 text-sm max-w-md">
+                          <p className="line-clamp-2" title={testimonial.text}>"{testimonial.text}"</p>
+                        </td>
+                        <td className="p-3 text-sm">
+                          <div className="text-yellow-500 text-base">
+                            {'★'.repeat(testimonial.rating)}
+                            {'☆'.repeat(5 - testimonial.rating)}
+                          </div>
+                        </td>
+                        <td className="p-3">
+                          <div className="flex gap-2">
+                            <button 
+                              onClick={() => handleEdit(testimonial)} 
+                              className="text-blue-600 hover:underline text-sm whitespace-nowrap"
+                            >
+                              Edit
+                            </button>
+                            <button 
+                              onClick={() => handleDelete(testimonial._id)} 
+                              className="text-red-600 hover:underline text-sm whitespace-nowrap"
+                            >
+                              Delete
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </>
           )}
         </div>
       </div>
