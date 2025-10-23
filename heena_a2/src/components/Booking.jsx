@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import ImageLoader from './ImageLoader';
 
 const Booking = () => {
   const { backend_url } = useContext(AppContext);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -17,7 +20,19 @@ const Booking = () => {
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'referenceImage') {
-      setFormData({ ...formData, [name]: files[0] });
+      const file = files[0];
+      setFormData({ ...formData, [name]: file });
+      
+      // Create image preview
+      if (file) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setImagePreview(null);
+      }
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -25,6 +40,7 @@ const Booking = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const formDataWithImage = new FormData();
       for (const key in formData) {
@@ -41,12 +57,25 @@ const Booking = () => {
 
       if (res.ok) {
         alert('Your booking request has been submitted! We will contact you shortly.');
+        // Reset form
+        setFormData({
+          name: '',
+          phone: '',
+          eventType: 'Bridal',
+          eventDate: '',
+          location: 'At Venue/Home',
+          preferences: '',
+          referenceImage: null
+        });
+        setImagePreview(null);
       } else {
         alert('Booking failed. Please try again.');
       }
     } catch (error) {
       console.error('Booking error:', error);
       alert('Booking failed. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -87,11 +116,40 @@ const Booking = () => {
 
           <div>
             <label htmlFor="referenceImage" className="block text-gray-700 mb-2">Upload Reference Image (Optional)</label>
-            <input type="file" name="referenceImage" id="referenceImage" onChange={handleChange} className="w-full p-3 border rounded-md" />
+            <input type="file" name="referenceImage" id="referenceImage" onChange={handleChange} accept="image/*" className="w-full p-3 border rounded-md" />
+            
+            {imagePreview && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600 mb-2">Preview:</p>
+                <div className="max-w-xs">
+                  <ImageLoader 
+                    src={imagePreview} 
+                    alt="Reference preview" 
+                    className="w-full h-auto rounded-lg border"
+                    loaderSize="medium"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          <button type="submit" className="w-full bg-brand text-white font-bold py-3 px-8 rounded-full hover:bg-orange-700 transition duration-300">
-            Submit Request
+          <button 
+            type="submit" 
+            disabled={isSubmitting}
+            className={`w-full font-bold py-3 px-8 rounded-full transition duration-300 flex items-center justify-center ${
+              isSubmitting 
+                ? 'bg-gray-400 cursor-not-allowed' 
+                : 'bg-brand text-white hover:bg-orange-700'
+            }`}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-3"></div>
+                Submitting...
+              </>
+            ) : (
+              'Submit Request'
+            )}
           </button>
         </form>
       </div>
