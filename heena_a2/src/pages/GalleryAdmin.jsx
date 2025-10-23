@@ -82,12 +82,14 @@ const GalleryAdmin = () => {
   };
 
   return (
-    <div className="py-12 bg-gray-50 px-4">
+    <div className="py-8 sm:py-12 bg-gray-50 px-4">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Manage Gallery</h2>
-        <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Upload New Image</h3>
-          <form onSubmit={handleSubmit} className="space-y-6">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">
+          Manage Gallery
+        </h2>
+        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md mb-6 sm:mb-8">
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">Upload New Image</h3>
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             <input
               type="text"
               name="title"
@@ -95,13 +97,13 @@ const GalleryAdmin = () => {
               onChange={(e) => setTitle(e.target.value)}
               value={title}
               required
-              className="w-full p-3 border rounded-md"
+              className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base"
             />
             <select
               name="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full p-3 border rounded-md"
+              className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base"
             >
               {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
             </select>
@@ -110,11 +112,12 @@ const GalleryAdmin = () => {
               name="image"
               onChange={(e) => setImage(e.target.files[0])}
               required
-              className="w-full p-3 border rounded-md"
+              accept="image/*"
+              className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base"
             />
             <button
               type="submit"
-              className="w-full bg-brand text-white font-bold py-3 px-8 rounded-full hover:bg-orange-700 transition duration-300 disabled:bg-gray-400"
+              className="w-full bg-brand text-white font-bold py-2.5 sm:py-3 px-6 sm:px-8 rounded-full hover:bg-orange-700 transition duration-300 disabled:bg-gray-400 text-sm sm:text-base"
               disabled={loading}
             >
               {loading ? 'Uploading...' : 'Upload Image'}
@@ -123,35 +126,42 @@ const GalleryAdmin = () => {
         </div>
 
         <div>
-          <h3 className="text-2xl font-bold text-gray-800 mb-4">Existing Images</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-gray-800 mb-3 sm:mb-4">Existing Images</h3>
           {isLoadingGallery ? (
             <div className="flex justify-center items-center py-20">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand mx-auto mb-4"></div>
-                <p className="text-gray-600 text-lg">Loading gallery...</p>
+                <p className="text-gray-600 text-sm sm:text-base md:text-lg">Loading gallery...</p>
               </div>
             </div>
           ) : gallery.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg">
-              <p className="text-gray-500 text-lg">No images in gallery yet</p>
+              <p className="text-gray-500 text-sm sm:text-base md:text-lg">No images in gallery yet</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
               {gallery.map((img) => (
-                <div key={img._id} className="relative">
+                <div key={img._id} className="relative group">
                   <ImageLoader
                     src={img.imageUrl || img.url}
                     alt={img.title || 'Gallery Image'}
-                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    className="w-full h-40 sm:h-48 object-cover rounded-lg shadow-md"
                     loaderSize="medium"
                   />
-                  <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1">{img.category}</div>
+                  <div className="absolute bottom-0 left-0 bg-black bg-opacity-60 text-white text-xs sm:text-sm p-1.5 sm:p-2 rounded-bl-lg">
+                    {img.category}
+                  </div>
                   <button
                     onClick={() => handleDelete(img._id)}
-                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
+                    className="absolute top-2 right-2 bg-red-600 hover:bg-red-700 text-white rounded-full w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center text-xs sm:text-sm font-bold transition shadow-md"
                   >
-                    X
+                    ×
                   </button>
+                  {img.title && (
+                    <div className="absolute top-0 left-0 bg-black bg-opacity-60 text-white text-xs p-1.5 rounded-tl-lg max-w-[calc(100%-2rem)] truncate">
+                      {img.title}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>

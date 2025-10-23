@@ -36,26 +36,42 @@ const Login = () => {
   };
 
   return (
-    <div className="py-12 bg-gray-50 px-4">
+    <div className="py-8 sm:py-12 bg-gray-50 px-4">
       <div className="max-w-md mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Login</h2>
-        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md space-y-6">
-          <input type="email" name="email" placeholder="Email Address" onChange={handleChange} value={form.email} required className="w-full p-3 border rounded-md" />
-          <input type="password" name="password" placeholder="Password" onChange={handleChange} value={form.password} required className="w-full p-3 border rounded-md" />
-          <button type="submit" className="w-full bg-brand text-white font-bold py-3 rounded-md hover:bg-orange-700 transition duration-300">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">Login</h2>
+        <form onSubmit={handleSubmit} className="bg-white p-6 sm:p-8 rounded-lg shadow-md space-y-4 sm:space-y-6">
+          <input 
+            type="email" 
+            name="email" 
+            placeholder="Email Address" 
+            onChange={handleChange} 
+            value={form.email} 
+            required 
+            className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base" 
+          />
+          <input 
+            type="password" 
+            name="password" 
+            placeholder="Password" 
+            onChange={handleChange} 
+            value={form.password} 
+            required 
+            className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base" 
+          />
+          <button type="submit" className="w-full bg-brand text-white font-bold py-2.5 sm:py-3 rounded-md hover:bg-orange-700 transition duration-300 text-sm sm:text-base">
             Login
           </button>
-          <button type="button" onClick={handleGoogleLogin} className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-bold py-3 rounded-md hover:bg-gray-50 transition duration-300 mt-4">
+          <button type="button" onClick={handleGoogleLogin} className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-bold py-2.5 sm:py-3 rounded-md hover:bg-gray-50 transition duration-300 mt-4 text-sm sm:text-base">
             <ImageLoader 
               src="https://static.cdnlogo.com/logos/g/35/google-icon.svg" 
               alt="Google logo" 
-              className="w-5 h-5 mr-2"
+              className="w-4 h-4 sm:w-5 sm:h-5 mr-2"
               loaderSize="small"
             />
             Continue with Google
           </button>
-          <p className="text-center text-gray-600">
-            Don't have an account? <Link to="/signup" className="text-orange-700 hover:underline">Sign Up</Link>
+          <p className="text-center text-gray-600 text-sm sm:text-base">
+            Don't have an account? <Link to="/signup" className="text-orange-700 hover:underline font-semibold">Sign Up</Link>
           </p>
         </form>
       </div>

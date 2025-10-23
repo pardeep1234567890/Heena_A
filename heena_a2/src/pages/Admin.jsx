@@ -39,53 +39,77 @@ const Admin = () => {
   };
 
   return (
-    <div className="py-12 px-4">
+    <div className="py-8 sm:py-12 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Admin Panel - Booking Requests</h2>
-        <div className="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">
+          Admin Panel - Booking Requests
+        </h2>
+        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-md overflow-x-auto">
           {isLoading ? (
             <div className="flex justify-center items-center py-20">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand mx-auto mb-4"></div>
-                <p className="text-gray-600 text-lg">Loading bookings...</p>
+                <p className="text-gray-600 text-sm sm:text-base md:text-lg">Loading bookings...</p>
               </div>
             </div>
           ) : bookings.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 text-lg">No bookings found</p>
+              <p className="text-gray-500 text-sm sm:text-base md:text-lg">No bookings found</p>
             </div>
           ) : (
-            <table className="w-full text-left table-auto">
-              <thead>
-                <tr className="bg-gray-200">
-                  <th className="p-4">Name</th>
-                  <th className="p-4">Phone</th>
-                  <th className="p-4">Event Type</th>
-                  <th className="p-4">Event Date</th>
-                  <th className="p-4">Location</th>
-                  <th className="p-4">Preferences</th>
-                  <th className="p-4">Status</th>
-                  <th className="p-4">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.map(booking => (
-                  <tr key={booking._id} className="border-b">
-                    <td className="p-4">{booking.name}</td>
-                    <td className="p-4">{booking.phone}</td>
-                    <td className="p-4">{booking.eventType}</td>
-                    <td className="p-4">{new Date(booking.eventDate).toLocaleDateString()}</td>
-                    <td className="p-4">{booking.location}</td>
-                    <td className="p-4">{booking.preferences}</td>
-                    <td className="p-4">{booking.status}</td>
-                    <td className="p-4">
-                      <button onClick={() => handleStatusUpdate(booking._id, 'approved')} className="text-green-600 hover:underline mr-4">Approve</button>
-                      <button onClick={() => handleStatusUpdate(booking._id, 'declined')} className="text-red-600 hover:underline">Decline</button>
-                    </td>
+            <div className="overflow-x-auto -mx-4 sm:mx-0">
+              <table className="w-full text-left table-auto min-w-[800px]">
+                <thead>
+                  <tr className="bg-gray-200">
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Name</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Phone</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Event Type</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Event Date</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Location</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Preferences</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Status</th>
+                    <th className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {bookings.map(booking => (
+                    <tr key={booking._id} className="border-b">
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{booking.name}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{booking.phone}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{booking.eventType}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{new Date(booking.eventDate).toLocaleDateString()}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">{booking.location}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm max-w-[150px] truncate">{booking.preferences}</td>
+                      <td className="p-2 sm:p-3 md:p-4 text-xs sm:text-sm">
+                        <span className={`px-2 py-1 rounded text-xs ${
+                          booking.status === 'approved' ? 'bg-green-100 text-green-800' :
+                          booking.status === 'declined' ? 'bg-red-100 text-red-800' :
+                          'bg-yellow-100 text-yellow-800'
+                        }`}>
+                          {booking.status}
+                        </span>
+                      </td>
+                      <td className="p-2 sm:p-3 md:p-4">
+                        <div className="flex flex-col sm:flex-row gap-2">
+                          <button 
+                            onClick={() => handleStatusUpdate(booking._id, 'approved')} 
+                            className="text-green-600 hover:underline text-xs sm:text-sm whitespace-nowrap"
+                          >
+                            Approve
+                          </button>
+                          <button 
+                            onClick={() => handleStatusUpdate(booking._id, 'declined')} 
+                            className="text-red-600 hover:underline text-xs sm:text-sm whitespace-nowrap"
+                          >
+                            Decline
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

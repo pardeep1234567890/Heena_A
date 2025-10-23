@@ -80,18 +80,42 @@ const Booking = () => {
   };
 
   return (
-    <div className="py-12 bg-gray-50 px-4">
+    <div className="py-8 sm:py-12 bg-gray-50 px-4">
       <div className="max-w-2xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Book an Appointment</h2>
-        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md space-y-6">
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">
+          Book an Appointment
+        </h2>
+        <form onSubmit={handleSubmit} className="bg-white p-5 sm:p-8 rounded-lg shadow-md space-y-4 sm:space-y-6">
           
-          <input type="text" name="name" placeholder="Full Name" onChange={handleChange} value={formData.name} required className="w-full p-3 border rounded-md" />
+          <input 
+            type="text" 
+            name="name" 
+            placeholder="Full Name" 
+            onChange={handleChange} 
+            value={formData.name} 
+            required 
+            className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base" 
+          />
           
-          <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} value={formData.phone} required className="w-full p-3 border rounded-md" />
+          <input 
+            type="tel" 
+            name="phone" 
+            placeholder="Phone Number" 
+            onChange={handleChange} 
+            value={formData.phone} 
+            required 
+            className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base" 
+          />
           
           <div>
-            <label htmlFor="eventType" className="block text-gray-700 mb-2">Event Type</label>
-            <select name="eventType" id="eventType" onChange={handleChange} value={formData.eventType} className="w-full p-3 border rounded-md">
+            <label htmlFor="eventType" className="block text-gray-700 mb-2 text-sm sm:text-base">Event Type</label>
+            <select 
+              name="eventType" 
+              id="eventType" 
+              onChange={handleChange} 
+              value={formData.eventType} 
+              className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base"
+            >
               <option>Bridal Mehndi</option>
               <option>Engagement & Sangeet</option>
               <option>Karva Chauth & Festivals</option>
@@ -100,19 +124,54 @@ const Booking = () => {
           </div>
 
           <div>
-            <label htmlFor="eventDate" className="block text-gray-700 mb-2">Event Date</label>
-            <input type="date" name="eventDate" id="eventDate" onChange={handleChange} value={formData.eventDate} required className="w-full p-3 border rounded-md" />
+            <label htmlFor="eventDate" className="block text-gray-700 mb-2 text-sm sm:text-base">Event Date</label>
+            <input 
+              type="date" 
+              name="eventDate" 
+              id="eventDate" 
+              onChange={handleChange} 
+              value={formData.eventDate} 
+              required 
+              className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base" 
+            />
           </div>
 
           <div>
-            <label className="block text-gray-700 mb-2">Service Location</label>
-            <div className="flex items-center space-x-4">
-              <label><input type="radio" name="location" value="At Venue/Home" checked={formData.location === 'At Venue/Home'} onChange={handleChange} className="mr-2" />At Venue/Home</label>
-              <label><input type="radio" name="location" value="Artist's Location" checked={formData.location === "Artist's Location"} onChange={handleChange} className="mr-2" />Artist's Location</label>
+            <label className="block text-gray-700 mb-2 text-sm sm:text-base">Service Location</label>
+            <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
+              <label className="flex items-center text-sm sm:text-base">
+                <input 
+                  type="radio" 
+                  name="location" 
+                  value="At Venue/Home" 
+                  checked={formData.location === 'At Venue/Home'} 
+                  onChange={handleChange} 
+                  className="mr-2" 
+                />
+                At Venue/Home
+              </label>
+              <label className="flex items-center text-sm sm:text-base">
+                <input 
+                  type="radio" 
+                  name="location" 
+                  value="Artist's Location" 
+                  checked={formData.location === "Artist's Location"} 
+                  onChange={handleChange} 
+                  className="mr-2" 
+                />
+                Artist's Location
+              </label>
             </div>
           </div>
 
-          <textarea name="preferences" placeholder="Design Preferences (e.g., traditional, modern, specific patterns)" onChange={handleChange} value={formData.preferences} rows="4" className="w-full p-3 border rounded-md"></textarea>
+          <textarea 
+            name="preferences" 
+            placeholder="Design Preferences (e.g., traditional, modern, specific patterns)" 
+            onChange={handleChange} 
+            value={formData.preferences} 
+            rows="4" 
+            className="w-full p-2.5 sm:p-3 border rounded-md text-sm sm:text-base"
+          ></textarea>
 
           <div>
             <label htmlFor="referenceImage" className="block text-gray-700 mb-2">Upload Reference Image (Optional)</label>

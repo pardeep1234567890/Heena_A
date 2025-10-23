@@ -50,16 +50,18 @@ const Gallery = () => {
   };
 
   return (
-    <div className="py-12 bg-white px-4">
+    <div className="py-8 sm:py-12 bg-white px-4">
       <div className="max-w-6xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Our Work</h2>
+        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">Our Work</h2>
         
-        <div className="flex justify-center space-x-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-6 sm:mb-8">
           {categories.map(category => (
             <button 
               key={category} 
               onClick={() => setSelectedCategory(category)}
-              className={`px-4 py-2 rounded-full font-bold ${selectedCategory === category ? 'bg-brand text-white' : 'bg-gray-200 text-gray-800'}`}
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-full font-bold text-sm sm:text-base transition-all ${
+                selectedCategory === category ? 'bg-brand text-white' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'
+              }`}
             >
               {category}
             </button>
