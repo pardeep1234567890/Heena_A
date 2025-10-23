@@ -53,7 +53,7 @@ const Header = () => {
               {isAdmin && (
                 <>
                   <li><Link to="/admin" className="hover:text-gray-300">Bookings</Link></li>
-                  <li><Link to="/admin/gallery" className="hover:text-gray-300">Gallery</Link></li>
+                  <li><Link to="/admin/gallery" className="hover:text-gray-300">Admin-Gallery</Link></li>
                   <li><Link to="/admin/users" className="hover:text-gray-300">Users</Link></li>
                   <li><Link to="/admin/testimonials" className="hover:text-gray-300">Testimonials</Link></li>
                 </>
