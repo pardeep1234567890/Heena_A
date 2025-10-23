@@ -1,7 +1,4 @@
-
-
-import React, { useState } from 'react';
-import { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Booking = () => {
@@ -15,6 +12,7 @@ const Booking = () => {
     preferences: '',
     referenceImage: null
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
@@ -27,6 +25,7 @@ const Booking = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const formDataWithImage = new FormData();
       for (const key in formData) {
@@ -35,9 +34,6 @@ const Booking = () => {
 
       const res = await fetch(`${backend_url}/api/bookings`, {
         method: 'POST',
-        headers: {
-          // 'Content-Type': 'multipart/form-data' // Let browser set this for FormData
-        },
         body: formDataWithImage
       });
 
@@ -49,8 +45,14 @@ const Booking = () => {
     } catch (error) {
       console.error('Booking error:', error);
       alert('Booking failed. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <div className="text-center py-12">Submitting your booking...</div>;
+  }
 
   return (
     <div className="py-12 bg-gray-50 px-4">

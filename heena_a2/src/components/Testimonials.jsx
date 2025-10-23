@@ -4,6 +4,7 @@ import { AppContext } from '../context/AppContext';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { backend_url } = useContext(AppContext);
 
   useEffect(() => {
@@ -15,11 +16,17 @@ const Testimonials = () => {
         }
       } catch (error) {
         console.error('Failed to fetch testimonials', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchTestimonials();
   }, [backend_url]);
+
+  if (loading) {
+    return <div className="text-center py-12">Loading...</div>;
+  }
 
   return (
     <div className="py-12">
