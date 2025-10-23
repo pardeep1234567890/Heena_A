@@ -6,9 +6,13 @@ import ImageLoader from '../components/ImageLoader';
 
 const GalleryAdmin = () => {
   const [gallery, setGallery] = useState([]);
-  const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
+  const [image, setImage] = useState(null);
+  const [title, setTitle] = useState('');
+  const [category, setCategory] = useState('Bridal');
+  const [loading, setLoading] = useState(false);
   const { backend_url } = useContext(AppContext);
+
+  const categories = ['Bridal', 'Arabic', 'Festival', 'Simple'];
 
   useEffect(() => {
     fetchGallery();
@@ -26,19 +30,22 @@ const GalleryAdmin = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!file) {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!image) {
       toast.error('Please select a file to upload');
+      return;
+    }
+    if (!title) {
+      toast.error('Please enter an image title');
       return;
     }
 
     const formData = new FormData();
-    formData.append('image', file);
-    setUploading(true);
+    formData.append('image', image);
+    formData.append('title', title);
+    formData.append('category', category);
+    setLoading(true);
 
     try {
       const res = await axios.post(`${backend_url}/api/gallery`, formData, {
@@ -48,10 +55,14 @@ const GalleryAdmin = () => {
       });
       setGallery([...gallery, res.data]);
       toast.success('Image uploaded successfully');
-      setFile(null);
+      setImage(null);
+      setTitle('');
+      setCategory('Bridal');
     } catch (error) {
       toast.error('Failed to upload image');
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -67,42 +78,67 @@ const GalleryAdmin = () => {
   };
 
   return (
-    <div className="py-12 px-4">
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Admin Panel - Gallery</h2>
+    <div className="py-12 bg-gray-50 px-4">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">Manage Gallery</h2>
         <div className="bg-white p-8 rounded-lg shadow-md mb-8">
-          <h3 className="text-2xl font-bold mb-4">Upload New Image</h3>
-          <input type="file" onChange={handleFileChange} className="mb-4" />
-          <button onClick={handleUpload} disabled={uploading} className="bg-brand text-white px-4 py-2 rounded-lg">
-            {uploading ? 'Uploading...' : 'Upload'}
-          </button>
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Upload New Image</h3>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <input
+              type="text"
+              name="title"
+              placeholder="Image Title"
+              onChange={(e) => setTitle(e.target.value)}
+              value={title}
+              required
+              className="w-full p-3 border rounded-md"
+            />
+            <select
+              name="category"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full p-3 border rounded-md"
+            >
+              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+            <input
+              type="file"
+              name="image"
+              onChange={(e) => setImage(e.target.files[0])}
+              required
+              className="w-full p-3 border rounded-md"
+            />
+            <button
+              type="submit"
+              className="w-full bg-brand text-white font-bold py-3 px-8 rounded-full hover:bg-orange-700 transition duration-300 disabled:bg-gray-400"
+              disabled={loading}
+            >
+              {loading ? 'Uploading...' : 'Upload Image'}
+            </button>
+          </form>
         </div>
-        <div className="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
-          <table className="w-full text-left table-auto">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-4">Image</th>
-                <th className="p-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {gallery.map(item => (
-                <tr key={item._id} className="border-b">
-                  <td className="p-4">
-                    <ImageLoader 
-                      src={item.url} 
-                      alt="Gallery" 
-                      className="w-32 h-32 object-cover rounded"
-                      loaderSize="medium"
-                    />
-                  </td>
-                  <td className="p-4">
-                    <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:underline">Delete</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800 mb-4">Existing Images</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {gallery.map((img) => (
+              <div key={img._id} className="relative">
+                <ImageLoader
+                  src={img.imageUrl || img.url}
+                  alt={img.title || 'Gallery Image'}
+                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  loaderSize="medium"
+                />
+                <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1">{img.category}</div>
+                <button
+                  onClick={() => handleDelete(img._id)}
+                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
+                >
+                  X
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
