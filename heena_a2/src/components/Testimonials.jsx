@@ -33,36 +33,20 @@ const Testimonials = () => {
     fetchTestimonials();
   }, [backend_url]);
 
-  const getInitials = (name) => {
-    if (!name) return '';
-    const names = name.split(' ');
-    if (names.length > 1) {
-      return `${names[0].charAt(0)}${names[names.length - 1].charAt(0)}`;
-    }
-    return name.charAt(0);
-  };
-
   return (
-    <div className="py-16 bg-gray-100 px-4">
+    <div className="py-12 bg-gray-50 px-4">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-center text-gray-800 mb-12 font-dancing">What Our Clients Say</h2>
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-8 font-dancing">What Our Clients Say</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map(testimonial => (
-            <div key={testimonial._id} className="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
-              <div className="p-8 text-center">
-                {testimonial.rating && (
-                  <div className="mb-4">
-                    <StarRating rating={testimonial.rating} />
-                  </div>
-                )}
-                <p className="text-gray-600 italic mb-6">"{testimonial.text}"</p>
-                <div className="flex items-center justify-center">
-                  <div className="w-12 h-12 bg-brand rounded-full flex items-center justify-center text-white font-bold">
-                    {getInitials(testimonial.author)}
-                  </div>
-                  <p className="ml-4 font-semibold text-gray-900">{testimonial.author}</p>
+            <div key={testimonial._id} className="bg-white p-6 rounded-lg shadow-md">
+              {testimonial.rating && (
+                <div className="mb-4">
+                  <StarRating rating={testimonial.rating} />
                 </div>
-              </div>
+              )}
+              <p className="text-gray-600 mb-4">"{testimonial.text}"</p>
+              <p className="text-right font-bold text-brand">- {testimonial.author}</p>
             </div>
           ))}
         </div>
