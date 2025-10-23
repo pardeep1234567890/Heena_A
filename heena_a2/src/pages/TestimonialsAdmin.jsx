@@ -5,13 +5,13 @@ import { AppContext } from '../context/AppContext';
 
 const TestimonialsAdmin = () => {
   const [testimonials, setTestimonials] = useState([]);
-  const [formData, setFormData] = useState({ name: '', message: '' });
+  const [formData, setFormData] = useState({ author: '', text: '', rating: 5 });
   const [editingId, setEditingId] = useState(null);
   const { backend_url } = useContext(AppContext);
 
   useEffect(() => {
     fetchTestimonials();
-  }, []);
+  }, [backend_url]);
 
   const fetchTestimonials = async () => {
     try {
@@ -26,7 +26,8 @@ const TestimonialsAdmin = () => {
   };
 
   const handleInputChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
@@ -40,7 +41,7 @@ const TestimonialsAdmin = () => {
         toast.success('Testimonial added successfully');
       }
       fetchTestimonials();
-      setFormData({ name: '', message: '' });
+      setFormData({ author: '', text: '', rating: 5 });
       setEditingId(null);
     } catch (error) {
       toast.error('Failed to save testimonial');
@@ -49,7 +50,7 @@ const TestimonialsAdmin = () => {
   };
 
   const handleEdit = (testimonial) => {
-    setFormData({ name: testimonial.name, message: testimonial.message });
+    setFormData({ author: testimonial.author, text: testimonial.text, rating: testimonial.rating || 5 });
     setEditingId(testimonial._id);
   };
 
@@ -72,30 +73,39 @@ const TestimonialsAdmin = () => {
           <h3 className="text-2xl font-bold mb-4">{editingId ? 'Edit Testimonial' : 'Add Testimonial'}</h3>
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
-              <label className="block text-gray-700">Name</label>
-              <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full p-2 border rounded" />
+              <label className="block text-gray-700">Author</label>
+              <input type="text" name="author" value={formData.author} onChange={handleInputChange} className="w-full p-2 border rounded" required />
             </div>
             <div className="mb-4">
-              <label className="block text-gray-700">Message</label>
-              <textarea name="message" value={formData.message} onChange={handleInputChange} className="w-full p-2 border rounded"></textarea>
+              <label className="block text-gray-700">Text</label>
+              <textarea name="text" value={formData.text} onChange={handleInputChange} className="w-full p-2 border rounded" required></textarea>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700">Rating (1-5)</label>
+              <input type="number" name="rating" value={formData.rating} onChange={handleInputChange} className="w-full p-2 border rounded" min="1" max="5" required />
             </div>
             <button type="submit" className="bg-brand text-white px-4 py-2 rounded-lg">{editingId ? 'Update' : 'Add'}</button>
+            {editingId && (
+              <button type="button" onClick={() => { setEditingId(null); setFormData({ author: '', text: '', rating: 5 }); }} className="bg-gray-500 text-white px-4 py-2 rounded-lg ml-4">Cancel</button>
+            )}
           </form>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
           <table className="w-full text-left table-auto">
             <thead>
               <tr className="bg-gray-200">
-                <th className="p-4">Name</th>
-                <th className="p-4">Message</th>
+                <th className="p-4">Author</th>
+                <th className="p-4">Text</th>
+                <th className="p-4">Rating</th>
                 <th className="p-4">Actions</th>
               </tr>
             </thead>
             <tbody>
               {testimonials.map(testimonial => (
                 <tr key={testimonial._id} className="border-b">
-                  <td className="p-4">{testimonial.name}</td>
-                  <td className="p-4">{testimonial.message}</td>
+                  <td className="p-4">{testimonial.author}</td>
+                  <td className="p-4">{testimonial.text}</td>
+                  <td className="p-4">{testimonial.rating}</td>
                   <td className="p-4">
                     <button onClick={() => handleEdit(testimonial)} className="text-blue-600 hover:underline mr-4">Edit</button>
                     <button onClick={() => handleDelete(testimonial._id)} className="text-red-600 hover:underline">Delete</button>
