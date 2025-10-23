@@ -19,7 +19,7 @@ const Testimonials = () => {
     };
 
     fetchTestimonials();
-  }, []);
+  }, [backend_url]);
 
   return (
     <div className="py-12 bg-gray-50 px-4">
