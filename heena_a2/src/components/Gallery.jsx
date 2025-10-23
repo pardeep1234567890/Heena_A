@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -6,13 +7,14 @@ const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const { backend_url } = useContext(AppContext);
 
   const categories = ['All', 'Bridal', 'Arabic', 'Festival', 'Simple'];
 
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gallery`);
+        const res = await fetch(`${backend_url}/api/gallery`);
         const data = await res.json();
         setImages(data);
         setFilteredImages(data);
@@ -22,7 +24,7 @@ const Gallery = () => {
     };
 
     fetchImages();
-  }, []);
+  }, [backend_url]);
 
   useEffect(() => {
     if (selectedCategory === 'All') {
