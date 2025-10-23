@@ -1,8 +1,11 @@
 
 
 import React, { useState } from 'react';
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 const Booking = () => {
+  const { backend_url } = useContext(AppContext);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -30,7 +33,7 @@ const Booking = () => {
         formDataWithImage.append(key, formData[key]);
       }
 
-      const res = await fetch('/api/bookings', {
+      const res = await fetch(`${backend_url}/api/bookings`, {
         method: 'POST',
         headers: {
           // 'Content-Type': 'multipart/form-data' // Let browser set this for FormData

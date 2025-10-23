@@ -12,7 +12,7 @@ const Gallery = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const res = await fetch('/api/gallery');
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/gallery`);
         const data = await res.json();
         setImages(data);
         setFilteredImages(data);
