@@ -25,7 +25,7 @@ const Testimonials = () => {
   }, [backend_url]);
 
   if (loading) {
-    return <div className="text-center py-12">Loading...</div>;
+    return <div className="py-12"><div className="loader"></div></div>;
   }
 
   return (

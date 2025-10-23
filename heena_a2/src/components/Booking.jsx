@@ -51,7 +51,7 @@ const Booking = () => {
   };
 
   if (loading) {
-    return <div className="text-center py-12">Submitting your booking...</div>;
+    return <div className="py-12"><div className="loader"></div></div>;
   }
 
   return (
