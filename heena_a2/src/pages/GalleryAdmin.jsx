@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { AppContext } from '../context/AppContext';
+import ImageLoader from '../components/ImageLoader';
 
 const GalleryAdmin = () => {
   const [gallery, setGallery] = useState([]);
@@ -87,7 +88,14 @@ const GalleryAdmin = () => {
             <tbody>
               {gallery.map(item => (
                 <tr key={item._id} className="border-b">
-                  <td className="p-4"><img src={item.url} alt="Gallery" className="w-32 h-32 object-cover" /></td>
+                  <td className="p-4">
+                    <ImageLoader 
+                      src={item.url} 
+                      alt="Gallery" 
+                      className="w-32 h-32 object-cover rounded"
+                      loaderSize="medium"
+                    />
+                  </td>
                   <td className="p-4">
                     <button onClick={() => handleDelete(item._id)} className="text-red-600 hover:underline">Delete</button>
                   </td>

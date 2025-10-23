@@ -4,6 +4,7 @@ import axios from "axios";
 import { useContext } from 'react';
 import { AppContext } from '../context/AppContext';
 import { toast } from 'react-toastify';
+import ImageLoader from './ImageLoader';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -47,7 +48,12 @@ const Signup = () => {
             Sign Up
           </button>
           <button type="button" onClick={handleGoogleLogin} className="w-full flex items-center justify-center bg-white border border-gray-300 text-gray-700 font-bold py-3 rounded-md hover:bg-gray-50 transition duration-300 mt-4">
-            <img src="https://static.cdnlogo.com/logos/g/35/google-icon.svg" alt="Google logo" className="w-5 h-5 mr-2" />
+            <ImageLoader 
+              src="https://static.cdnlogo.com/logos/g/35/google-icon.svg" 
+              alt="Google logo" 
+              className="w-5 h-5 mr-2"
+              loaderSize="small"
+            />
             Continue with Google
           </button>
           <p className="text-center text-gray-600">

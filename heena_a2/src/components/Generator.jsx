@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import ImageLoader from './ImageLoader';
 
 const Generator = () => {
   const [prompt, setPrompt] = useState('');
@@ -70,7 +71,12 @@ const Generator = () => {
       {imageUrl && (
         <div className="mt-8">
           <h3 className="text-2xl font-bold mb-4">Your Generated Design:</h3>
-          <img src={imageUrl} alt="Generated Mehandi Design" className="mx-auto border rounded-lg shadow-lg" />
+          <ImageLoader 
+            src={imageUrl} 
+            alt="Generated Mehandi Design" 
+            className="mx-auto border rounded-lg shadow-lg max-w-2xl"
+            loaderSize="large"
+          />
         </div>
       )}
     </div>

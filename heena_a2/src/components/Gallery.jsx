@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { AppContext } from '../context/AppContext';
+import ImageLoader from './ImageLoader';
 
 const Gallery = () => {
   const [images, setImages] = useState([]);
@@ -7,6 +8,7 @@ const Gallery = () => {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
   const { backend_url } = useContext(AppContext);
 
   const categories = ['All', 'Bridal', 'Arabic', 'Festival', 'Simple'];
@@ -14,12 +16,15 @@ const Gallery = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
+        setIsLoadingGallery(true);
         const res = await fetch(`${backend_url}/api/gallery`);
         const data = await res.json();
         setImages(data);
         setFilteredImages(data);
       } catch (error) {
         console.error('Error fetching gallery images:', error);
+      } finally {
+        setIsLoadingGallery(false);
       }
     };
 
@@ -61,13 +66,28 @@ const Gallery = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredImages.map((image) => (
-            <div key={image._id} className="overflow-hidden rounded-lg shadow-md cursor-pointer" onClick={() => openLightbox(image.imageUrl)}>
-              <img src={image.imageUrl} alt={image.title} className="w-full h-full object-cover" />
-            </div>
-          ))}
-        </div>
+        {isLoadingGallery ? (
+          <div className="flex justify-center items-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand"></div>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {filteredImages.map((image) => (
+              <div 
+                key={image._id} 
+                className="overflow-hidden rounded-lg shadow-md cursor-pointer"
+                onClick={() => openLightbox(image.imageUrl)}
+              >
+                <ImageLoader
+                  src={image.imageUrl}
+                  alt={image.title}
+                  className="w-full h-full object-cover"
+                  aspectRatio="square"
+                />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {isLightboxOpen && (
@@ -82,7 +102,12 @@ const Gallery = () => {
             >
               &times;
             </button>
-            <img src={selectedImage} alt="Enlarged view" className="max-w-screen-lg max-h-screen-lg" />
+            <ImageLoader
+              src={selectedImage}
+              alt="Enlarged view"
+              className="max-w-screen-lg max-h-screen-lg"
+              loaderSize="large"
+            />
           </div>
         </div>
       )}
