@@ -10,16 +10,18 @@ const GalleryAdmin = () => {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('Bridal');
   const [loading, setLoading] = useState(false);
+  const [isLoadingGallery, setIsLoadingGallery] = useState(true);
   const { backend_url } = useContext(AppContext);
 
   const categories = ['Bridal', 'Arabic', 'Festival', 'Simple'];
 
   useEffect(() => {
     fetchGallery();
-  }, []);
+  }, [backend_url]);
 
   const fetchGallery = async () => {
     try {
+      setIsLoadingGallery(true);
       if (backend_url) {
         const { data } = await axios.get(`${backend_url}/api/gallery`);
         setGallery(data);
@@ -27,6 +29,8 @@ const GalleryAdmin = () => {
     } catch (error) {
       toast.error('Failed to fetch gallery');
       console.error(error);
+    } finally {
+      setIsLoadingGallery(false);
     }
   };
 
@@ -120,25 +124,38 @@ const GalleryAdmin = () => {
 
         <div>
           <h3 className="text-2xl font-bold text-gray-800 mb-4">Existing Images</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {gallery.map((img) => (
-              <div key={img._id} className="relative">
-                <ImageLoader
-                  src={img.imageUrl || img.url}
-                  alt={img.title || 'Gallery Image'}
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                  loaderSize="medium"
-                />
-                <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1">{img.category}</div>
-                <button
-                  onClick={() => handleDelete(img._id)}
-                  className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
-                >
-                  X
-                </button>
+          {isLoadingGallery ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand mx-auto mb-4"></div>
+                <p className="text-gray-600 text-lg">Loading gallery...</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ) : gallery.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg">
+              <p className="text-gray-500 text-lg">No images in gallery yet</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {gallery.map((img) => (
+                <div key={img._id} className="relative">
+                  <ImageLoader
+                    src={img.imageUrl || img.url}
+                    alt={img.title || 'Gallery Image'}
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    loaderSize="medium"
+                  />
+                  <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white text-xs p-1">{img.category}</div>
+                  <button
+                    onClick={() => handleDelete(img._id)}
+                    className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 text-xs"
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

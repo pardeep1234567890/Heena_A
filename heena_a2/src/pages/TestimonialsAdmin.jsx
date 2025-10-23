@@ -7,6 +7,7 @@ const TestimonialsAdmin = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [formData, setFormData] = useState({ author: '', text: '', rating: 5 });
   const [editingId, setEditingId] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const { backend_url } = useContext(AppContext);
 
   useEffect(() => {
@@ -15,6 +16,7 @@ const TestimonialsAdmin = () => {
 
   const fetchTestimonials = async () => {
     try {
+      setIsLoading(true);
       if (backend_url) {
         const { data } = await axios.get(`${backend_url}/api/testimonials`);
         setTestimonials(data);
@@ -22,6 +24,8 @@ const TestimonialsAdmin = () => {
     } catch (error) {
       toast.error('Failed to fetch testimonials');
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -91,29 +95,42 @@ const TestimonialsAdmin = () => {
           </form>
         </div>
         <div className="bg-white p-8 rounded-lg shadow-md overflow-x-auto">
-          <table className="w-full text-left table-auto">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="p-4">Author</th>
-                <th className="p-4">Text</th>
-                <th className="p-4">Rating</th>
-                <th className="p-4">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {testimonials.map(testimonial => (
-                <tr key={testimonial._id} className="border-b">
-                  <td className="p-4">{testimonial.author}</td>
-                  <td className="p-4">{testimonial.text}</td>
-                  <td className="p-4">{testimonial.rating}</td>
-                  <td className="p-4">
-                    <button onClick={() => handleEdit(testimonial)} className="text-blue-600 hover:underline mr-4">Edit</button>
-                    <button onClick={() => handleDelete(testimonial._id)} className="text-red-600 hover:underline">Delete</button>
-                  </td>
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-brand mx-auto mb-4"></div>
+                <p className="text-gray-600 text-lg">Loading testimonials...</p>
+              </div>
+            </div>
+          ) : testimonials.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">No testimonials found</p>
+            </div>
+          ) : (
+            <table className="w-full text-left table-auto">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="p-4">Author</th>
+                  <th className="p-4">Text</th>
+                  <th className="p-4">Rating</th>
+                  <th className="p-4">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {testimonials.map(testimonial => (
+                  <tr key={testimonial._id} className="border-b">
+                    <td className="p-4">{testimonial.author}</td>
+                    <td className="p-4">{testimonial.text}</td>
+                    <td className="p-4">{testimonial.rating}</td>
+                    <td className="p-4">
+                      <button onClick={() => handleEdit(testimonial)} className="text-blue-600 hover:underline mr-4">Edit</button>
+                      <button onClick={() => handleDelete(testimonial._id)} className="text-red-600 hover:underline">Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>
