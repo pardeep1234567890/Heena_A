@@ -8,8 +8,12 @@ export const getTestimonials = async (req, res) => {
     const testimonials = await Testimonial.find();
     res.json(testimonials);
   } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
+    console.error('Error in getTestimonials:', err.message, err.stack);
+    res.status(500).json({ 
+      error: 'Server Error',
+      message: err.message,
+      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 };
 
