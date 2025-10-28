@@ -24,7 +24,7 @@ A full-stack web application for a professional mehndi (henna) artist booking pl
 
 ### Frontend (`heena_a2`)
 - **Framework**: React 19
-- **Build Tool**: Vite (Rolldown)
+- **Build Tool**: Vite with Rolldown bundler
 - **Styling**: Tailwind CSS
 - **Routing**: React Router DOM v7
 - **HTTP Client**: Axios
