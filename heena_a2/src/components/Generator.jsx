@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ImageLoader from './ImageLoader';
+import { AppContext } from '../context/AppContext';
 
 const Generator = () => {
+  const { backend_url } = useContext(AppContext);
   const [prompt, setPrompt] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [loading, setLoading] = useState(false);
@@ -14,7 +16,7 @@ const Generator = () => {
     setImageUrl('');
 
     try {
-      const response = await fetch('/api/generate', {
+      const response = await fetch(`${backend_url}/api/generate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
