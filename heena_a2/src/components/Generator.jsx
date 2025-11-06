@@ -14,13 +14,12 @@ const Generator = () => {
     setImageUrl('');
 
     try {
-      const response = await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_HUGGINGFACE_API_KEY}`,
         },
-        body: JSON.stringify({ inputs: prompt }),
+        body: JSON.stringify({ prompt }),
       });
 
       if (!response.ok) {

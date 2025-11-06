@@ -22,6 +22,7 @@ import bookingRoutes from './routes/booking.js';
 import galleryRoutes from './routes/gallery.js';
 import userRoutes from './routes/user.js';
 import testimonialRoutes from './routes/testimonial.js';
+import generatorRoutes from './routes/generator.js';
 
 // Import passport config after dotenv is loaded
 await import('./config/passport.js');
@@ -55,6 +56,7 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/gallery', galleryRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/testimonials', testimonialRoutes);
+app.use('/api', generatorRoutes);
 
 // MongoDB connection with better error handling for serverless
 let cachedDb = null;
