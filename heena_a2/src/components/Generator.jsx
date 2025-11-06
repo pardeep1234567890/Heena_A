@@ -14,20 +14,23 @@ const Generator = () => {
     setImageUrl('');
 
     try {
-      const response = await fetch('http://localhost:3001/api/generate-image', {
+      const response = await fetch('https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_HUGGINGFACE_API_KEY}`,
         },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify({ inputs: prompt }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to generate image');
+        const errorText = await response.text();
+        throw new Error(`Failed to generate image: ${errorText}`);
       }
 
-      const data = await response.json();
-      setImageUrl(data.imageUrl);
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+      setImageUrl(imageUrl);
     } catch (err) {
       setError(err.message);
     } finally {
