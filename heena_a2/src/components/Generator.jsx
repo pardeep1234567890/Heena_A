@@ -16,6 +16,9 @@ const Generator = () => {
     setImageUrl('');
 
     try {
+      console.log('Backend URL:', backend_url);
+      console.log('Sending request to:', `${backend_url}/api/generate`);
+      
       const response = await fetch(`${backend_url}/api/generate`, {
         method: 'POST',
         headers: {
@@ -24,15 +27,30 @@ const Generator = () => {
         body: JSON.stringify({ prompt }),
       });
 
+      console.log('Response status:', response.status);
+
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Failed to generate image: ${errorText}`);
+        let errorMessage = 'Failed to generate image';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.details || errorMessage;
+          
+          // If model is loading, show helpful message
+          if (response.status === 503) {
+            errorMessage = errorData.error + '. This usually takes 20-30 seconds.';
+          }
+        } catch {
+          errorMessage = await response.text();
+        }
+        throw new Error(errorMessage);
       }
 
       const blob = await response.blob();
       const imageUrl = URL.createObjectURL(blob);
       setImageUrl(imageUrl);
+      console.log('Image generated successfully');
     } catch (err) {
+      console.error('Error:', err);
       setError(err.message);
     } finally {
       setLoading(false);
@@ -63,12 +81,17 @@ const Generator = () => {
         </button>
       </form>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {error && (
+        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative max-w-2xl mx-auto mb-4">
+          <strong className="font-bold">Error: </strong>
+          <span className="block sm:inline">{error}</span>
+        </div>
+      )}
 
       {loading && (
-        <div>
-          <p>Generating your design, please wait...</p>
-          {/* You can add a spinner here */}
+        <div className="flex flex-col items-center justify-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand mb-4"></div>
+          <p className="text-gray-600">Generating your design, please wait... This may take 20-60 seconds.</p>
         </div>
       )}
 
