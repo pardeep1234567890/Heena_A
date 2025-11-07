@@ -39,11 +39,14 @@ export const generateImage = async (req, res) => {
     res.set('Content-Type', 'image/jpeg');
     res.send(response.data);
   } catch (error) {
-    console.error('Error generating image:', error.message);
+    console.error('=== ERROR GENERATING IMAGE ===');
+    console.error('Error message:', error.message);
+    console.error('Error stack:', error.stack);
     
     // Better error handling
     if (error.response) {
       console.error('Response status:', error.response.status);
+      console.error('Response headers:', error.response.headers);
       console.error('Response data:', error.response.data?.toString());
       
       // Check if model is loading
@@ -60,6 +63,7 @@ export const generateImage = async (req, res) => {
       });
     }
     
+    console.error('No response from API');
     res.status(500).json({ 
       error: 'Failed to generate image',
       details: error.message 
