@@ -16,24 +16,21 @@ export const generateImage = async (req, res) => {
   try {
     console.log('Generating image for prompt:', prompt);
     
-    // Using a smaller, faster model that works better with free tier
-    const response = await axios.post(
-      'https://router.huggingface.co/hf-inference/models/runwayml/stable-diffusion-v1-5',
-      { 
-        inputs: `henna mehndi design, ${prompt}, intricate patterns, beautiful hand art, detailed, high quality`,
-        parameters: {
-          negative_prompt: "blurry, low quality, bad anatomy"
-        }
+    // Use Hugging Face Inference API with a working model
+    const enhancedPrompt = `henna mehndi design, ${prompt}, intricate patterns, beautiful hand art, detailed, high quality`;
+    
+    const response = await axios({
+      method: 'post',
+      url: 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',
+      headers: {
+        'Authorization': `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
       },
-      {
-        headers: {
-          'Authorization': `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        responseType: 'arraybuffer',
-        timeout: 120000, // 120 second timeout for image generation
-      }
-    );
+      data: {
+        inputs: enhancedPrompt,
+      },
+      responseType: 'arraybuffer',
+      timeout: 120000,
+    });
 
     console.log('Image generated successfully');
     res.set('Content-Type', 'image/jpeg');
