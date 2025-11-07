@@ -125,7 +125,7 @@ const Header = () => {
                 {!isAdmin && (
                   <>
                     <li><button onClick={handleBookingClick} className="block w-full text-left hover:text-gray-300 transition py-2">Book Now</button></li>
-                    <li><Link to="/generator" onClick={closeMenu} className="block hover:text-gray-300 transition py-2">Generator</Link></li>
+                    {/* <li><Link to="/generator" onClick={closeMenu} className="block hover:text-gray-300 transition py-2">Generator</Link></li> */}
                   </>
                 )}
                 {isAdmin && (
