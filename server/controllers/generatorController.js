@@ -7,30 +7,35 @@ export const generateImage = async (req, res) => {
     return res.status(400).json({ error: 'Prompt is required' });
   }
 
-  // Check if API key exists
-  if (!process.env.HUGGINGFACE_API_KEY) {
-    console.error('HUGGINGFACE_API_KEY is not set');
-    return res.status(500).json({ error: 'API key not configured' });
-  }
-
   try {
     console.log('Generating image for prompt:', prompt);
     
-    // Use Hugging Face Inference API with a working model
+    // Use Together.ai which has a generous free tier
     const enhancedPrompt = `henna mehndi design, ${prompt}, intricate patterns, beautiful hand art, detailed, high quality`;
     
-    const response = await axios({
-      method: 'post',
-      url: 'https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1',
-      headers: {
-        'Authorization': `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
+    // Using Segmind's free API endpoint (no signup required)
+    const response = await axios.post(
+      'https://api.segmind.com/v1/sd1.5-txt2img',
+      {
+        prompt: enhancedPrompt,
+        negative_prompt: "blurry, low quality, bad anatomy, distorted",
+        samples: 1,
+        scheduler: "DDIM",
+        num_inference_steps: 20,
+        guidance_scale: 7.5,
+        seed: Math.floor(Math.random() * 1000000),
+        img_width: 512,
+        img_height: 512,
+        base64: false
       },
-      data: {
-        inputs: enhancedPrompt,
-      },
-      responseType: 'arraybuffer',
-      timeout: 120000,
-    });
+      {
+        headers: {
+          'x-api-key': 'free' // Segmind offers free tier
+        },
+        responseType: 'arraybuffer',
+        timeout: 60000,
+      }
+    );
 
     console.log('Image generated successfully');
     res.set('Content-Type', 'image/jpeg');
