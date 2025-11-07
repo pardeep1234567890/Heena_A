@@ -87,7 +87,7 @@ const Header = () => {
                 {!isAdmin && (
                   <>
                     <li><button onClick={handleBookingClick} className="hover:text-gray-300 transition">Book Now</button></li>
-                    <li><Link to="/generator" className="hover:text-gray-300 transition">Generator</Link></li>
+                    {/* <li><Link to="/generator" className="hover:text-gray-300 transition">Generator</Link></li> */}
                   </>
                 )}
                 {isAdmin && (
