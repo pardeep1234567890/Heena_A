@@ -18,7 +18,7 @@ export const generateImage = async (req, res) => {
     
     // Using a smaller, faster model that works better with free tier
     const response = await axios.post(
-      'https://api-inference.huggingface.co/models/runwayml/stable-diffusion-v1-5',
+      'https://router.huggingface.co/hf-inference/models/runwayml/stable-diffusion-v1-5',
       { 
         inputs: `henna mehndi design, ${prompt}, intricate patterns, beautiful hand art, detailed, high quality`,
         parameters: {
