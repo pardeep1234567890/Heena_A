@@ -1,34 +1,48 @@
 import React from 'react';
+import { Heart, Sparkles, CalendarHeart, Palette } from 'lucide-react';
 
 const services = [
   {
     name: 'Bridal Mehndi',
-    description: 'Intricate and detailed designs for the bride, tailored to your style.'
+    description: 'Intricate and detailed designs for the bride, tailored to your style.',
+    icon: <Heart className="w-8 h-8 text-brand" />
   },
   {
     name: 'Engagement & Sangeet',
-    description: 'Elegant designs perfect for engagement ceremonies and sangeet parties.'
+    description: 'Elegant designs perfect for engagement ceremonies and sangeet parties.',
+    icon: <Sparkles className="w-8 h-8 text-brand" />
   },
   {
     name: 'Karva Chauth & Festivals',
-    description: 'Celebrate festivals with beautiful and traditional Mehandi patterns.'
+    description: 'Celebrate festivals with beautiful and traditional Mehandi patterns.',
+    icon: <CalendarHeart className="w-8 h-8 text-brand" />
   },
   {
     name: 'Simple Designs',
-    description: 'Minimalist and modern designs for any occasion.'
+    description: 'Minimalist and modern designs for any occasion.',
+    icon: <Palette className="w-8 h-8 text-brand" />
   }
 ];
 
 const Services = () => {
   return (
-    <div className="py-8 sm:py-12 bg-gray-50 px-4">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 font-dancing">Our Services</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+    <div className="py-16 sm:py-24 px-4 bg-orange-50/60 backdrop-blur-sm">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4 font-dancing drop-shadow-sm">Our Services</h2>
+          <p className="text-gray-800 max-w-2xl mx-auto text-lg font-medium">We offer a wide range of Mehandi designs to make your special moments even more memorable.</p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {services.map(service => (
-            <div key={service.name} className="bg-white p-5 sm:p-6 rounded-lg shadow-md text-center hover:shadow-xl transition-shadow duration-300">
-              <h3 className="text-lg sm:text-xl font-bold text-gray-800 mb-2">{service.name}</h3>
-              <p className="text-sm sm:text-base text-gray-600">{service.description}</p>
+            <div key={service.name} className="bg-white/95 backdrop-blur-md p-6 sm:p-8 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/60 group transform hover:-translate-y-2">
+              <div className="mb-6 flex justify-center transform group-hover:scale-110 transition-transform duration-300">
+                <div className="p-4 bg-orange-100 rounded-full text-brand shadow-inner">
+                  {service.icon}
+                </div>
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 mb-3 text-center group-hover:text-brand transition-colors duration-300">{service.name}</h3>
+              <p className="text-gray-600 text-center leading-relaxed font-medium">{service.description}</p>
             </div>
           ))}
         </div>

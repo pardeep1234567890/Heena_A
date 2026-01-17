@@ -19,11 +19,11 @@ const Home = () => {
   };
 
   return (
-    <div 
-      className="w-full bg-cover bg-center" 
+    <div
+      className="min-h-screen w-full bg-cover bg-center bg-fixed"
       style={{ backgroundImage: `url(${MehandiBg})` }}
     >
-      <div className="flex-grow flex items-center justify-center py-12 sm:py-16 md:py-20 px-4">
+      <div className="min-h-screen flex items-center justify-center py-12 px-4">
         <div className="text-center p-6 sm:p-8 md:p-12 lg:p-16 bg-white bg-opacity-75 rounded-lg shadow-lg max-w-4xl mx-auto">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4 font-dancing">
             Welcome to Heena by Anshu
@@ -39,9 +39,9 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <About />
+      <Services />
       <Testimonials />
-      <Services/>
-      <About/>
     </div>
   );
 };
