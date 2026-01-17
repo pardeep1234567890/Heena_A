@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import MehandiBg from '../assets/mehandi-background.jpg';
 import Testimonials from './Testimonials';
+import Services from './Services'
+import About from './About'
 
 const Home = () => {
   const navigate = useNavigate();
@@ -38,6 +40,8 @@ const Home = () => {
         </div>
       </div>
       <Testimonials />
+      <Services/>
+      <About/>
     </div>
   );
 };
