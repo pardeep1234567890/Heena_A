@@ -3,7 +3,7 @@ import ImageLoader from './ImageLoader';
 
 const About = () => {
   return (
-    <section className="py-16 sm:py-24 px-4 overflow-hidden bg-orange-50/60 backdrop-blur-sm">
+    <section className="py-16 sm:py-24 px-4 overflow-hidden">
       <div className="max-w-6xl mx-auto">
         <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
 
@@ -22,7 +22,7 @@ const About = () => {
             </div>
           </div>
 
-          <div className="w-full md:w-1/2 text-center md:text-left bg-white/95 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/60">
+          <div className="w-full md:w-1/2 text-center md:text-left bg-white bg-opacity-50 backdrop-blur-sm p-8 rounded-3xl shadow-xl">
             <div className="inline-block py-1 px-3 rounded-full bg-brand/10 text-brand text-sm font-bold mb-4 tracking-wide uppercase">
               The Artist
             </div>

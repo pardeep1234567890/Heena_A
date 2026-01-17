@@ -39,7 +39,7 @@ const Home = () => {
           </button>
         </div>
       </div>
-      <About />
+      <About/>
       <Services />
       <Testimonials />
     </div>
